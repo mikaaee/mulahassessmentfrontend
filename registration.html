@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=640, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            max-width: 640px;
+            margin: 0 auto;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f2f2;
+            color: #555;
+        }
+        .card {
+            background: #fff;
+            margin: 40px 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .logo {
+            width: 180px;
+            margin: 40px auto 20px;
+            display: block;
+        }
+        .title {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 32px;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        .subtitle {
+            color: #777;
+            margin: 10px 0 40px;
+            font-size: 16px;
+            text-align: left;
+        }
+        form {
+            text-align: left;
+            margin: 0 auto;
+            width: 100%;
+        }
+        label {
+            font-weight: 500;
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .birthday {
+            display: flex;
+            gap: 5px;
+        }
+        .birthday input {
+            width: 33%;
+        }
+        .checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #777;
+        }
+        .continue-button {
+            background-color: #F58220;
+            color: #fff;
+            font-size: 18px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px;
+            width: 100%;
+            margin: 40px 0 0;
+            cursor: pointer;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            font-style: italic;
+        }
+        footer {
+            font-size: 14px;
+            color: #999;
+            padding: 20px 0;
+            text-align: center;
+        }
+        footer a {
+            color: #0033cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <img src="img/logo.png" alt="MULAH" class="logo">
+        <div class="title">Registration</div>
+        <div class="subtitle">Please fill up your details.</div>
+
+        <form id="registration-form">
+            <label>Name</label>
+            <input type="text" id="name" placeholder="Enter Name">
+            <div class="error-message">*Please insert a name.</div>
+
+            <label>Birthday</label>
+            <div class="birthday">
+                <input type="text" id="day" placeholder="DD" maxlength="2">
+                <input type="text" id="month" placeholder="MM" maxlength="2">
+                <input type="text" id="year" placeholder="YYYY" maxlength="4">
+            </div>
+            <div class="error-message">*Please insert your birthday.</div>
+
+            <label>Email</label>
+            <input type="email" id="email" placeholder="Email Address">
+            <div class="error-message">*Please insert a valid email address.</div>
+
+            <div class="checkbox">
+                <input type="checkbox" id="no-email" style="margin-right: 8px;"> No email address
+            </div>
+
+            <button class="continue-button" type="submit">Continue</button>
+        </form>
+    </div>
+
+    <footer>Powered by <a href="https://mulahrewards.com" target="_blank">MulahRewards.com</a></footer>
+
+    <script>
+        const form = document.getElementById('registration-form');
+        const nameInput = document.getElementById('name');
+        const dayInput = document.getElementById('day');
+        const monthInput = document.getElementById('month');
+        const yearInput = document.getElementById('year');
+        const emailInput = document.getElementById('email');
+        const noEmailCheckbox = document.getElementById('no-email');
+        const errorMessages = document.querySelectorAll('.error-message');
+
+        [dayInput, monthInput, yearInput].forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+        noEmailCheckbox.addEventListener('change', function() {
+            emailInput.disabled = this.checked;
+            if (this.checked) {
+                emailInput.value = '';
+            }
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            errorMessages.forEach(msg => msg.style.display = 'none');
+
+            if (!nameInput.value.trim()) {
+                nameInput.nextElementSibling.style.display = 'block';
+                isValid = false;
+            }
+
+            if (!dayInput.value || !monthInput.value || !yearInput.value) {
+                dayInput.parentElement.nextElementSibling.style.display = 'block';
+                isValid = false;
+            }
+
+            if (!noEmailCheckbox.checked && !emailInput.value) {
+                emailInput.nextElementSibling.style.display = 'block';
+                isValid = false;
+            } else if (!noEmailCheckbox.checked && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                emailInput.nextElementSibling.style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const formData = {
+                    name: nameInput.value.trim(),
+                    birthday: `${dayInput.value.padStart(2, '0')}/${monthInput.value.padStart(2, '0')}/${yearInput.value}`,
+                    email: noEmailCheckbox.checked ? 'No email provided' : emailInput.value.trim()
+                };
+                localStorage.setItem('formData', JSON.stringify(formData));
+                window.location.href = 'page3.html';
+            }
+        });
+    </script>
+
+</body>
+</html>

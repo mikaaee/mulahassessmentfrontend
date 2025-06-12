@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=640, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Check Loyalty Points</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            max-width: 640px;
+            margin: 0 auto;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f2f2;
+            color: #555;
+        }
+        .card {
+            background: #fff;
+            margin: 40px 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .logo {
+            width: 180px;
+            margin: 40px auto 20px;
+            display: block;
+        }
+        .welcome {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 32px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .subtitle {
+            color: #F58220;
+            margin: 20px 0 40px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .phone-input {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .phone-input select,
+        .phone-input input {
+            font-size: 18px;
+            padding: 12px;
+            border: none;
+            border-bottom: 2px solid #F58220;
+            outline: none;
+        }
+        .phone-input select {
+            width: 80px;
+            color: #555;
+        }
+        .phone-input input {
+            width: 200px;
+            padding-right: 40px;
+        }
+        .status-icon {
+            position: absolute;
+            right: 50px;
+            top: 12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            color: #fff;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .status-icon.success {
+            background-color: green;
+        }
+        .status-icon.error {
+            background-color: red;
+        }
+        .check-button {
+            background-color: #F58220;
+            color: #fff;
+            font-size: 18px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px;
+            width: 80%;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        footer {
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            padding: 20px 0;
+        }
+        footer a {
+            color: #0033cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <img src="img/logo.png" alt="MULAH" class="logo">
+
+        <div class="welcome">Hello,<br>Welcome !</div>
+        <div class="subtitle">Check Your Loyalty Points & Rewards</div>
+
+        <div class="phone-input">
+            <select disabled><option>+60</option></select>
+            <input type="text" id="phone-number" placeholder="Enter your mobile number">
+            <div id="valid-icon" class="status-icon"></div>
+        </div>
+
+        <button class="check-button" id="check-points">Check Loyalty Points</button>
+        <div class="error" id="phone-error"></div>
+    </div>
+
+    <footer>Powered by <a href="https://mulahrewards.com" target="_blank">MulahRewards.com</a></footer>
+
+    <script>
+        const phoneInput = document.getElementById('phone-number');
+        const checkPointsBtn = document.getElementById('check-points');
+        const phoneError = document.getElementById('phone-error');
+        const validIcon = document.getElementById('valid-icon');
+
+        phoneInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            phoneError.style.display = 'none';
+
+            if (this.value === '173527250') {
+                validIcon.textContent = '✔';
+                validIcon.className = 'status-icon success';
+                validIcon.style.opacity = 1;
+            } else if (this.value.length > 0) {
+                validIcon.textContent = '✖';
+                validIcon.className = 'status-icon error';
+                validIcon.style.opacity = 1;
+            } else {
+                validIcon.style.opacity = 0;
+            }
+        });
+
+        checkPointsBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const phoneNumber = phoneInput.value;
+
+            if (!phoneNumber) {
+                phoneError.textContent = '*Please insert a phone number.';
+                phoneError.style.display = 'block';
+                return;
+            }
+            if (phoneNumber !== '173527250') {
+                phoneError.textContent = '*Invalid phone number.';
+                phoneError.style.display = 'block';
+                return;
+            }
+
+            localStorage.setItem('phoneNumber', '+60' + phoneNumber);
+            window.location.href = 'registration.html';
+        });
+    </script>
+</body>
+</html>

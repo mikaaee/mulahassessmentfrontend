@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=640, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            max-width: 640px;
+            margin: 0 auto;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f2f2;
+            color: #555;
+        }
+        .card {
+            background: #fff;
+            margin: 40px 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .logo {
+            width: 180px;
+            margin: 40px auto 20px;
+            display: block;
+        }
+        .title {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 32px;
+            font-weight: 500;
+            margin: 20px 0 40px 0;
+        }
+        .summary {
+            text-align: left;
+            margin: 0 auto;
+            width: 100%;
+            font-size: 18px;
+            line-height: 2.2;
+        }
+        .summary span {
+            font-weight: 600;
+        }
+        footer {
+            font-size: 14px;
+            color: #999;
+            padding: 20px 0;
+            text-align: center;
+        }
+        footer a {
+            color: #0033cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <img src="img/logo.png" alt="MULAH" class="logo">
+        <div class="title">Summary Details</div>
+
+        <div class="summary">
+            <div>Phone: <span id="page3-phone"></span></div>
+            <div>Name: <span id="page3-name"></span></div>
+            <div>Email: <span id="page3-email"></span></div>
+            <div>Birthday: <span id="page3-birthday"></span></div>
+        </div>
+    </div>
+
+    <footer>Powered by <a href="https://mulahrewards.com" target="_blank">MulahRewards.com</a></footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneNumber = localStorage.getItem('phoneNumber');
+            const formData = JSON.parse(localStorage.getItem('formData'));
+
+            if (phoneNumber) {
+                document.getElementById('page3-phone').textContent = phoneNumber;
+            }
+            if (formData) {
+                document.getElementById('page3-name').textContent = formData.name;
+                document.getElementById('page3-email').textContent = formData.email;
+                document.getElementById('page3-birthday').textContent = formData.birthday;
+            }
+        });
+    </script>
+
+</body>
+</html>
